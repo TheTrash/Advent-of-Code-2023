@@ -17,7 +17,7 @@ for i in range(len(matr)):
         if matr[i][j] in symbols:
             coords.append((i,j))
 
-print(coords)
+#print(coords)
 
 tmp_list = []
 
@@ -27,35 +27,34 @@ for curr_pos in coords:
 
     queue = []
     for i in range(i_c-1,i_c+2):
-        print("-")
+        #print("-")
         for j in range(j_c-1,j_c+2):
-            print(matr[i][j])
+            #print(matr[i][j])
             if matr[i][j] != "." and matr[i][j] not in symbols:
                 queue.append((i,j))
             
-    print(queue)
+    #print(queue)
 
     appended = True
-    c = 0
-    while(appended and c < 1):
-        print("test")
+
+    while(appended):
+        #print("test")
         appended = False       
         for e in queue:
             ## destra
-            if ( e[1]+1 < len(matr)  and matr[e[0]][e[1]+1] != "." and matr[e[0]][e[1]+1] not in symbols and (e[0],e[1]+1) not in queue):
+            if ( e[1] < len(matr)  and matr[e[0]][e[1]+1] != "." and matr[e[0]][e[1]+1] not in symbols and (e[0],e[1]+1) not in queue):
                 queue.append((e[0],e[1]+1))
-                print(e[0],e[1]+1)
+                #print(e[0],e[1]+1)
                 appended = True
             ## sinistra
-            if ( e[1]-1 > 0 and matr[e[0]][e[1]-1] != "." and matr[e[0]][e[1]-1] not in symbols and (e[0],e[1]-1) not in queue):
+            if ( e[1] > 0 and matr[e[0]][e[1]-1] != "." and matr[e[0]][e[1]-1] not in symbols and (e[0],e[1]-1) not in queue):
                 queue.append((e[0],e[1]-1))
-                print(e[0],e[1]-1)
+                #print(e[0],e[1]-1)
                 appended = True
 
-        c+=1
 
     queue.sort()
-    print(queue)
+    ##print(queue)
     st = ""
     
 
@@ -71,7 +70,7 @@ for curr_pos in coords:
         prev = curr
     
     cut.append(len(queue)+1)
-    print(cut)
+    #print(cut)
     
     start = 0
     st = ""
@@ -82,5 +81,5 @@ for curr_pos in coords:
         st = ""
         start = e
 
-    print(tmp_list)
+    #print(tmp_list)
 print(sum(tmp_list))
