@@ -27,7 +27,7 @@ for row in l:
         print("card ", index, "wins", matches)
         for i in range(index+1,index+matches+1):
             print(i)
-            test[i] += ( 1 * test[index+1])
+            test[i] += ( 1 * test[index])
             print(test)
         
             
@@ -38,3 +38,7 @@ for row in l:
 
 
 print(test)
+s = 0
+for e in test:
+    s+= test[e]
+print(s)
