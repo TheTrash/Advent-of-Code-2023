@@ -93,6 +93,9 @@ for seed in many_seeds:
         else:
             tmp_list.append(mapper(t[0]))
             tmp_list.append(mapper(t[1]))
+    print([i for i in range(seed[0],seed[1]+1)])
+    print([ mapper(i)  for i in range(seed[0],seed[1]+1)])
+    print(sol)
     sol_tot.append(min(tmp_list))
 
 print(min(sol_tot))
