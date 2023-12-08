@@ -10,7 +10,7 @@ distance = int("".join(distance))
 print("time", time)
 print("distance", distance)
 
-
+print(f"({time}-x)*x > {distance}")
 
 
 first = 0
@@ -28,5 +28,7 @@ for t in range(first,distance,1):
         print(t)
         last = t
         break
-
+print("first",first)
+print("last", last)
 print(last - first)
+
