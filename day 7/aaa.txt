@@ -1,0 +1,28 @@
+for hand in l:
+    if 'J' in hand[0]:
+        li = expand(hand[0])
+        res = calculate_max_expand(li)
+        occur = calculate_occurr(res[0])
+        print(hand, occur)
+        cls = bucketer_class( occur )
+        bucket[cls].append(hand)
+    else:
+        occur = calculate_occurr(hand[0])
+        bucketer(occur,hand)
+        occur = len(orders) * [0]
+
+
+
+rank = 1
+tot = 0
+#print(bucket)
+for b in keys:
+    print(bucket[b])
+    tmp = sorted(bucket[b],key=functools.cmp_to_key(compare), reverse=True)
+#     #print(tmp)
+    for i in range(len(bucket[b])-1,-1,-1):
+        #print(tmp[i][0] ,tmp[i][1])
+        tot += int(tmp[i][1]) * rank
+        rank += 1
+
+print(tot)
