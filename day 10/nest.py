@@ -90,4 +90,65 @@ while(True):
     right_path.append(walk(left,right_path))
     steps +=1
     
-#print(left_path,right_path)
+
+
+
+
+path = left_path + right_path
+x_min = min(path,key=lambda x: x[0]) 
+x_max = max(path,key=lambda x: x[0]) 
+y_min = min(path,key=lambda x: x[1]) 
+y_max = max(path,key=lambda x: x[1]) 
+
+print(x_min, x_max)
+print(y_min,y_max)
+
+
+#                       1: | (flip)
+# also with - inside of it
+# 2: F7 (no change)  
+#                       3: FJ (flip)
+#                       4: L7 (flip)
+# 5: LJ (no change)
+pattern_occur = ["FJ", "L7", "|"]
+
+def count_occurrencies(occur,index):
+    r = ""
+    tmp = 0
+    #print(start,occur)
+    for t in range(0,occur):
+        r += maze[index][t]
+    for p in pattern_occur:
+        #print("pttern ",p," in ", r.replace("-",""),"  repeat ", r.replace("-","").count(p))
+        tmp += r.replace("-","").count(p)
+    return tmp
+
+
+for i in range(x_min[0],x_max[0]+1):
+     for j in range(y_min[1],y_max[1]+1):
+        if not( (i,j) in path):
+            maze[i][j] = "."
+
+tot = 0
+inside  = 0
+for i in range(x_min[0],x_max[0]+1):
+    row = ""
+    pattern = 0
+    occur = 0
+    start = 0
+    for j in range(y_min[1],y_max[1]+1):
+        if maze[i][j] == "." :
+            pattern = count_occurrencies(j,i)
+            if pattern%2 == 1:
+                row += "1"
+                tot += 1
+            else:
+                row += "0"
+        else:
+            row += maze[i][j]
+
+    print(row, "   ", "  " , pattern)
+
+
+print(tot)
+    
