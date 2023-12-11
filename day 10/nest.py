@@ -1,4 +1,4 @@
-f = open("input", "r")
+f = open("input2", "r")
 l = [  n.replace("\n","" ) for n in f.readlines()  ]
 
 
@@ -65,6 +65,7 @@ for i, row in enumerate(l):
         if e == "S":
             start = (i,j)
         tmp.append(e)
+    #print(tmp)
     maze.append(tmp)
 
 left_path = []
@@ -116,16 +117,16 @@ def count_occurrencies(occur,index):
     r = ""
     tmp = 0
     #print(start,occur)
-    for t in range(0,occur):
+    for t in range(1,occur):
         r += maze[index][t]
     for p in pattern_occur:
-        #print("pttern ",p," in ", r.replace("-",""),"  repeat ", r.replace("-","").count(p))
+         #print("pttern ",p," in ", r.replace("-",""),"  repeat ", r.replace("-","").count(p), "index ", index, "occur ", occur)
         tmp += r.replace("-","").count(p)
     return tmp
 
 
-for i in range(x_min[0],x_max[0]+1):
-     for j in range(y_min[1],y_max[1]+1):
+for i in range(0,140):
+     for j in range(0,140):
         if not( (i,j) in path):
             maze[i][j] = "."
 
@@ -133,13 +134,14 @@ tot = 0
 inside  = 0
 for i in range(x_min[0],x_max[0]+1):
     row = ""
+    row2 = ""
     pattern = 0
     occur = 0
     start = 0
     for j in range(y_min[1],y_max[1]+1):
         if maze[i][j] == "." :
             pattern = count_occurrencies(j,i)
-            if pattern%2 == 1:
+            if pattern % 2 == 1:
                 row += "1"
                 tot += 1
             else:
@@ -147,8 +149,9 @@ for i in range(x_min[0],x_max[0]+1):
         else:
             row += maze[i][j]
 
+        row2 += maze[i][j]
     print(row, "   ", "  " , pattern)
-
+    #print(row2, "   ", "  " , count_occurrencies(j,i))
 
 print(tot)
     
