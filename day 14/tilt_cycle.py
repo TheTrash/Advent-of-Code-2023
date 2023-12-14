@@ -1,4 +1,5 @@
 import numpy as np
+import copy 
 
 def beauty_print(matr, debug = False):
     if(debug):
@@ -32,20 +33,22 @@ def create_matrix(rows):
 
 
 
-def swap(rock, free, col):
-    panel[rock][col] = "."
-    panel[free][col] = "O"
 
-def tilt():
-    for col in range(len(panel[0])):
+
+def tilt(matr, cicle):
+    def swap(rock, free, col):
+        matr[rock][col] = "."
+        matr[free][col] = "O"
+
+    for col in range(len(matr[0])):
         free_pos = 0
-        for i in range(len(panel)):
-            if panel[i][col] == "#":
+        for i in range(len(matr)):
+            if matr[i][col] == "#":
                 free_pos = i+1
-            if panel[i][col] == "O":
+            if matr[i][col] == "O":
                 swap(i,free_pos,col)
                 free_pos+=1
-
+    return matr
 
 #beauty_print(panel)
 f = open("input", "r")
@@ -54,9 +57,22 @@ l = [  n.replace("\n","" ) for n in f.readlines()  ]
 panel = create_matrix(l)
 
 beauty_print(panel)
+old_panel = panel
+direction = 3
+for i in range(4):
+    T = np.rot90(panel)
+    panel = tilt(T,i)
+    
+    
+    print("cicle ", i%3, "direction ", (i%4))
+    beauty_print(np.rot90(T,3-i%4), True)
+    print(result(np.rot90(T,3-i%4)))
+    #if i%4 == 0:
+    #    if (old_panel == np.rot90(panel,i%4)).any():
+    #        break
+    #    else:
+    #        old_panel = new_panel
 
-#panel = np.rot90(panel)
-tilt()
 
-result(panel)
+
 
