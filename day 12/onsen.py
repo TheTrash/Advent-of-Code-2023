@@ -14,4 +14,17 @@ unknown_onsen = [(match.start(), match.end(), match.group()) for match in re.fin
 working_onsen = [(match.start(), match.end(), match.group()) for match in re.finditer(working, onsen)]
 
 print(unknown_onsen)
+
+
+
+
 print(working_onsen)
+
+i= 0
+unk_i = 0
+work_i = 0
+for e in work:
+    if int(e) == (working_onsen[i][1]-working_onsen[i][0]):
+        print("test")
+    
+    
