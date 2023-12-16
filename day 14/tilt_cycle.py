@@ -1,6 +1,7 @@
 import numpy as np
 import copy 
-
+import os
+import time
 def beauty_print(matr, debug = False):
     if(debug):
         print("\n")
@@ -19,7 +20,8 @@ def result(panel):
         tot += np.count_nonzero(panel[r][:] == "O") * (len(panel) - r)
         #print(panel[r][:].count("O"))
 
-    print(tot)
+    #print(tot)
+    return tot
 
 def create_matrix(rows):
     mapp = []
@@ -32,10 +34,7 @@ def create_matrix(rows):
     return np.array(mapp)
 
 
-
-
-
-def tilt(matr, cicle):
+def tilt(matr):
     def swap(rock, free, col):
         matr[rock][col] = "."
         matr[free][col] = "O"
@@ -55,24 +54,47 @@ f = open("input", "r")
 l = [  n.replace("\n","" ) for n in f.readlines()  ]
 
 panel = create_matrix(l)
+action = 0
 
-beauty_print(panel)
-old_panel = panel
-direction = 3
-for i in range(4):
-    T = np.rot90(panel)
-    panel = tilt(T,i)
-    
-    
-    print("cicle ", i%3, "direction ", (i%4))
-    beauty_print(np.rot90(T,3-i%4), True)
-    print(result(np.rot90(T,3-i%4)))
-    #if i%4 == 0:
-    #    if (old_panel == np.rot90(panel,i%4)).any():
+
+passage = []
+cycle = []
+start = False
+first_of_cycle = ""
+lengt_of_cycle = 0
+for i in range(1000000000):
+    os.system("cls")
+    print("cycle ", i)
+    # Rotazione di 90 gradi
+    for _ in range(4):
+        panel = tilt(panel)
+        panel = np.rot90(panel, 3)
+
+    if start == True:
+        if panel.tolist() in cycle:
+            print(len(cycle))
+            break
+        cycle.append(panel.tolist())
+
+        
+
+    if panel.tolist() in passage and start == False:
+        print(passage.index(panel.tolist()))
+        first_of_cycle = panel.tolist()
+        start = True
+        cycle.append(panel.tolist())
+
+    passage.append(panel.tolist())
+
+
+    #vis = panel
+    #beauty_print(vis)
+    #print(result(np.array(panel)))
+    #i = input()
+    #if i == "e":
     #        break
-    #    else:
-    #        old_panel = new_panel
 
-
-
-
+print(len(passage), len(cycle))
+index_of = (1000000000 - 1 - len(passage)-len(cycle)) % len(cycle)
+print(index_of)
+print(result(np.array(cycle[index_of])))
