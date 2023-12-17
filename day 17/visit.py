@@ -16,14 +16,16 @@ def beauty_print(matr, debug = False):
 
 def get_neigh(point,old_point):
     neighbor = []
+    global unvisited_nodes
     for di in directions:
         tmp = tuple( t + d for t,d in zip(point, di))
-        if 0 <= tmp[0] < len(grid) and 0 <= tmp[1] < len(grid[0]):
-            if abs(tmp[0] - old_point[0]) != 3 and abs(tmp[1] - old_point[1]) != 3:
-                neighbor.append(tmp)
-            else:
-                print(old_point,point,tmp)
-                print(abs(tmp[0] - old_point[0]), abs(tmp[1] - old_point[1]) )
+        if(tmp in unvisited_nodes):
+            if 0 <= tmp[0] < len(grid) and 0 <= tmp[1] < len(grid[0]):
+                if abs(tmp[0] - old_point[0]) <= 3 and abs(tmp[1] - old_point[1]) <= 3:
+                    neighbor.append(tmp)
+                else:
+                    print(old_point,point,tmp)
+                    print(abs(tmp[0] - old_point[0]), abs(tmp[1] - old_point[1]) )
 
     return neighbor
 
@@ -69,9 +71,11 @@ p = start
 # inizializzo la fringe solo con la path iniziale
 cost = int(grid[p[0]][p[1]])
 
+unvisited_nodes = [(i,j) for i in range(len(grid)) for j in range(len(grid))]
+
 def dijkstra_algorithm(graph, start_node):
 
-    unvisited_nodes = [(i,j) for i in range(len(grid)) for j in range(len(grid))]
+    global unvisited_nodes
  
     # We'll use this dict to save the cost of visiting each node and update it as we move along the graph   
     shortest_path = {}
@@ -88,13 +92,21 @@ def dijkstra_algorithm(graph, start_node):
 
     while unvisited_nodes:
         # The code block below finds the node with the lowest score
+        current_min_node = None
+        for node in unvisited_nodes: # Iterate over the nodes
+            if current_min_node == None:
+                current_min_node = node
+            elif shortest_path[node] < shortest_path[current_min_node]:
+                current_min_node = node
+    
+        # The code block below finds the node with the lowest score
         print(current_min_node)
         try:
             # The code block below retrieves the current node's neighbors and updates their distances
             prev = current_min_node
-            for _ in range(0,2):
+            for _ in range(0,3):
                 prev = previous_nodes[prev]
-            print(manhattan_distance(current_min_node,prev))
+            print("distance", manhattan_distance(current_min_node,prev))
             neighbors = get_neigh(current_min_node, prev)
         except KeyError as e: 
             neighbors = get_neigh(current_min_node, (0,0))
@@ -106,10 +118,9 @@ def dijkstra_algorithm(graph, start_node):
                 shortest_path[neighbor] = tentative_value
                 # We also update the best path to the current node
                 previous_nodes[neighbor] = current_min_node
- 
+
         # After visiting its neighbors, we mark the node as "visited"
         unvisited_nodes.remove(current_min_node)
-        current_min_node = min(unvisited_nodes)
 
     return previous_nodes, shortest_path
 

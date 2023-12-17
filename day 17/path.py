@@ -1,5 +1,7 @@
 import os
 from copy import deepcopy
+from heapq import heappop, heappush
+
 def beauty_print(matr, debug = False):
     if(debug):
         print("\n")
@@ -12,22 +14,14 @@ def beauty_print(matr, debug = False):
         else:
             print(row)
 
-def get_neigh(path, cost):
+def get_neigh(point, cost, old_cout):
     neigh = []
-    point = path[-1]
-    old_p = path[-3] if len(path) > 2 else path[-1]
-    for di in directions:
+    for di, cout in zip(directions,["A","B","C","D"]):
         tmp = tuple( t + d for t,d in zip(point, di))
-        if 0 <= tmp[0] < len(grid) and 0 <= tmp[1] < len(grid[0]):
-            if abs(tmp[0] - old_p[0]) != 3 and abs(tmp[1] - old_p[1]) != 3:
+        if tmp[0] in range(len(grid)) and tmp[1] in range(len(grid)) and not(tmp in visited):
+            if not(old_cout in [ i*3 for i in ["A","B","C","D"]]):
                 new_cost = cost + grid[tmp[0]][tmp[1]]
-                if tmp in node_dict :
-                    if node_dict[tmp] > new_cost :
-                        node_dict[tmp] = new_cost
-                        neigh.append([ tmp , new_cost])
-                else:
-                    node_dict[tmp] = new_cost
-                    neigh.append([ tmp , new_cost])
+                neigh.append(( tmp , new_cost, old_cout[-2:]+cout ))
 
     return neigh
 
@@ -62,38 +56,35 @@ directions = [su, dx , giu , sx]
 start = (0,0)
 goal = (len(grid)-1,len(grid)-1)
 
-p = start
 # inizializzo la fringe solo con la path iniziale
-cost = int(grid[p[0]][p[1]])
-fringe = [[p, cost, 25 ]]
-max_dist = abs(p[0] - goal[0]) + abs(p[1] - goal[1])
+p = start
+cost = 0
 
-sol = []
-while(True):
+fringe = [(p, cost ,"")]
+visited = []
+
+while(fringe):
     # estraggo la path che costa meno
-    f = min(fringe, key = lambda x : x[1] )
-    #print(f)
-    fringe.remove(f)
-    # p è la path attuale
-    p = f[0]
-    # cost è il costo della path attuale
-    cost = f[1]
-    #print(dist)
-    sol.append(p)
+    p, cost, di = heappop(fringe)
 
-    if sol[-1] == goal:
-        sol.append(f[0])
+    if p == goal:
+        print(cost)
         break
 
     # creo le nuove path con le biforcazioni
-    ne = get_neigh(sol, cost)
+    visited.append(p)
+    ne = get_neigh(p,cost,di)
     for n in ne:
-        if not(n in fringe):
-            fringe.append(n)
+        print("vicini di ",p,"\n",n)
+        print("visited ",visited)
+        if not((n[0]) in visited):
+            if len(fringe) > 0:
+                if not(n[0] in fringe[:][0]):
+                    heappush(fringe,n)
+            else:
+                heappush(fringe,n)
 
     print("fringe", fringe)
 
-for p in sol:
-    grid2[p[0]][p[1]] = "X"
+    inp = input()
 
-print(node_dict)
