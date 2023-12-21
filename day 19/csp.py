@@ -142,5 +142,3 @@ for bord in allow:
     tot+=tmp
 
 print("tot", tot)
-# for bord in [x,m,a,s]:
-#     tot *=  math.factorial(bord["max"]- bord["min"]) / math.factorial((bord["max"]- bord["min"])-1)
